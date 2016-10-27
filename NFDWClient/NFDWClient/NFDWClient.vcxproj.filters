@@ -36,22 +36,28 @@
     <ClInclude Include="Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="NFDWClient.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="dialog\Dlg4NDMainEntry.h">
       <Filter>dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\NFDWApp.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="NFDWEnvCfg.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="NFDWClient.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="dialog\Dlg4NDMainEntry.cpp">
       <Filter>dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\NFDWApp.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="NFDWMain.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
