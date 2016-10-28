@@ -16,6 +16,13 @@ protected:
 public:
 	HWND create(HINSTANCE hInst);
 
+private:
+	void loadImage();
+	void loadFont();
+
+
+private:
+	unsigned int m_uImageIdBK;
 };
 
 

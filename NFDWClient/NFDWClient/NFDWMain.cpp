@@ -7,6 +7,22 @@
 
 #define MAX_LOADSTRING 100
 
+
+ULONG_PTR g_gdipToken;
+::Gdiplus::GdiplusStartupInput g_gdipStartupInput;
+
+//
+struct DummyCls4GDIP{
+	DummyCls4GDIP() {
+		::Gdiplus::GdiplusStartup( &g_gdipToken, &g_gdipStartupInput, NULL );
+	}
+	~DummyCls4GDIP() {
+		::Gdiplus::GdiplusShutdown( g_gdipToken );
+	}
+};
+
+// 全局变量:
+DummyCls4GDIP g_initGdip;
 // 全局变量: 
 HINSTANCE hInst;								// 当前实例
 TCHAR szTitle[MAX_LOADSTRING];					// 标题栏文本

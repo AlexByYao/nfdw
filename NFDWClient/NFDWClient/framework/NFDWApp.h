@@ -1,7 +1,11 @@
 #ifndef __NFDWAPP_H__
 #define __NFDWAPP_H__
+#include <string>
+#include "tchar.h"
 
 class NFDWApp {
+public:
+	typedef std::basic_string< TCHAR > tstring_type;
 public:
 	NFDWApp();
 	~NFDWApp();
@@ -12,7 +16,8 @@ public:
 		return &s_instance;
 	}
 
-
+public:
+	bool getImageFileDir(tstring_type& tstrImageDirPath);
 
 };
 
