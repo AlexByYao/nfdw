@@ -22,6 +22,9 @@
     <Filter Include="controls">
       <UniqueIdentifier>{a0f51861-4828-4347-83fa-fbde672e0cd5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="pages">
+      <UniqueIdentifier>{e411b80c-11ea-4c69-b760-8ee6e85d7cec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
