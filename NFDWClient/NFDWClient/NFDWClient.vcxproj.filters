@@ -48,6 +48,24 @@
     <ClInclude Include="NFDWEnvCfg.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="framework\NDPageBase.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="pages\NDPage4Pay.h">
+      <Filter>pages</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\NDTextView.h">
+      <Filter>controls</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\NDViewBase.h">
+      <Filter>controls</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\NDButton.h">
+      <Filter>controls</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\NDImageView.h">
+      <Filter>controls</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -61,6 +79,21 @@
     </ClCompile>
     <ClCompile Include="NFDWMain.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="pages\NDPage4Pay.cpp">
+      <Filter>pages</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\NDTextView.cpp">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\NDViewBase.cpp">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\NDButton.cpp">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\NDImageView.cpp">
+      <Filter>controls</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

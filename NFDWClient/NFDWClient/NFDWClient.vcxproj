@@ -87,17 +87,28 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="controls\NDButton.h" />
+    <ClInclude Include="controls\NDImageView.h" />
+    <ClInclude Include="controls\NDTextView.h" />
+    <ClInclude Include="controls\NDViewBase.h" />
     <ClInclude Include="dialog\Dlg4NDMainEntry.h" />
+    <ClInclude Include="framework\NDPageBase.h" />
     <ClInclude Include="framework\NFDWApp.h" />
     <ClInclude Include="NFDWEnvCfg.h" />
+    <ClInclude Include="pages\NDPage4Pay.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="controls\NDButton.cpp" />
+    <ClCompile Include="controls\NDImageView.cpp" />
+    <ClCompile Include="controls\NDTextView.cpp" />
+    <ClCompile Include="controls\NDViewBase.cpp" />
     <ClCompile Include="dialog\Dlg4NDMainEntry.cpp" />
     <ClCompile Include="framework\NFDWApp.cpp" />
     <ClCompile Include="NFDWMain.cpp" />
+    <ClCompile Include="pages\NDPage4Pay.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

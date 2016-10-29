@@ -18,7 +18,7 @@ public:
 
 public:
 	bool getImageFileDir(tstring_type& tstrImageDirPath);
-
+	
 };
 
 

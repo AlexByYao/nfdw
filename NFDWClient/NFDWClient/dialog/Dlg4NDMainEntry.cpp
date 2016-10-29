@@ -5,48 +5,54 @@
 #include "loader/YBImageLoader.h"
 #include "frame/YBCtrlImageStatic.h"
 #include "frame/YBCtrlImageDepository.h"
+#include "pages/NDPage4Pay.h"
 
 USING_NAMESPACE_YBCTRL
 
 Dlg4NDMainEntry::Dlg4NDMainEntry() {
-	loadFont();
-	loadImage();
+	_loadFont();
+	_loadImage();
+
+	m_containerPages.push_back( new NDPage4Pay() );
 }
 
 Dlg4NDMainEntry::~Dlg4NDMainEntry() {
 
 }
 
-YBCTRL_WNDMSGMAP_BEGIN(Dlg4NDMainEntry, YBCtrlBase )
-    YBCTRL_ONWNDMSG(WM_PAINT, _onWM_PAINT)
+YBCTRL_WNDMSGMAP_BEGIN( Dlg4NDMainEntry, YBCtrlBase )
+YBCTRL_ONWNDMSG( WM_PAINT, _onWM_PAINT )
+YBCTRL_ONWNDMSG( WM_CLOSE, _onWM_CLOSE )
+YBCTRL_ONWNDMSG( WM_DESTROY, _onWM_DESTROY )
 YBCTRL_WNDMSGMAP_END()
 
 HWND Dlg4NDMainEntry::create( HINSTANCE hInst ) {
 	int width = GetSystemMetrics(SM_CXSCREEN);
 	int height = GetSystemMetrics(SM_CYSCREEN);
-	return YBCtrlBase::_createHWND(0, WS_VISIBLE | WS_POPUP, 0, 0, width, height, NULL, NULL, hInst, NULL);
+	YBCtrlBase::_createHWND( 0, WS_VISIBLE | WS_POPUP, 0, 0, width, height, NULL, NULL, hInst, NULL );
+
+	m_ivBK.setImageId( m_uImageIdBK );
+	m_ivBK.setRect( 0, 0, width, height );
+	_initPages( hInst );
+	switchPage( NDPAGEID_4_PAY );
+	return m_hWnd;
+}
+
+void Dlg4NDMainEntry::_onWM_DESTROY( ybctrl::YBCtrlWndMsg* pYBCtrlWndMsg ) {
+	PostQuitMessage( 0 );
+}
+
+void Dlg4NDMainEntry::_onWM_CLOSE( ybctrl::YBCtrlWndMsg* pYBCtrlWndMsg ) {
+	if( !pYBCtrlWndMsg )
+		return;
+	::DestroyWindow( pYBCtrlWndMsg->m_hWnd );
 }
 
 void Dlg4NDMainEntry::_onWM_PAINT(ybctrl::YBCtrlWndMsg* pYBCtrlWndMsg) {
-	//RECT rcClient;
-	//PAINTSTRUCT ps;
-	//HDC hPaintDC = NULL;
-	//HBRUSH hBrush = NULL;
-
-	//::GetClientRect(m_hWnd, &rcClient);
-	//hPaintDC = ::BeginPaint(m_hWnd, &ps);
-	//hBrush = ::CreateSolidBrush(RGB(255, 100, 100));
-
-	//::FillRect(hPaintDC, &rcClient, hBrush);
-	//
-	//::DeleteObject( hBrush );
-	//::EndPaint( m_hWnd, &ps );
-
 	if( !pYBCtrlWndMsg )
 		return;
 	HWND hWnd;
 	HDC hPaintDC;
-	HBRUSH hBrushBK;
 	PAINTSTRUCT ps;
 	RECT rcClient;
 
@@ -54,52 +60,60 @@ void Dlg4NDMainEntry::_onWM_PAINT(ybctrl::YBCtrlWndMsg* pYBCtrlWndMsg) {
 	::GetClientRect( hWnd, &rcClient );
 	hPaintDC = ::BeginPaint( hWnd, &ps );
 
-	if( m_uImageIdBK == YBCTRL_IMAGE_ID_INVALID ) {
-		hBrushBK = ::CreateSolidBrush( RGB( 0, 29, 73 ) );
-		::FillRect( hPaintDC, &rcClient, hBrushBK );
-		::DeleteObject( hBrushBK );
-	}
-	else {
-		ybctrl::YBCtrlImageBase* pYBImage = NULL;
+	m_ivBK.draw( hPaintDC );
 
-		if( !YBCTRLIMAGEDEPOSITORY_INSTANCE_WITHNAMESPACE->getImage( m_uImageIdBK, &pYBImage ) ) {
-			assert( false );
-		}
-		else {
-			ybctrl::YBCtrlImageStatic* pYBImageStatic = NULL;
-			if( pYBImage->getType() == YBCTRL_IMAGE_TYPE_STATIC ) {
-				pYBImageStatic = ( ybctrl::YBCtrlImageStatic* )pYBImage;
-				Gdiplus::Image* pGPImage = NULL;
+	_drawPage( hPaintDC, rcClient );
 
-				pGPImage = pYBImageStatic->getImage();
-				::StretchBlt( hPaintDC, 0, 0, ( rcClient.right - rcClient.left ), ( rcClient.bottom - rcClient.top )
-					, pYBImageStatic->getMemDC(), 0, 0, pGPImage->GetWidth(), pGPImage->GetHeight(), SRCCOPY );
-
-				//Gdiplus::Graphics graphics( hPaintDC );
-				//ybctrl::GdipStretchBlt( &graphics, pYBImageStatic->getImage(), 0, 0, ( rcClient.right - rcClient.left ), ( rcClient.bottom - rcClient.top )
-				//	, 0, 0, pYBImageStatic->getImage()->GetWidth(), pYBImageStatic->getImage()->GetHeight() );
-
-			}
-
-		}
-	}
 	::EndPaint( hWnd, &ps );
 }
 
 
-void Dlg4NDMainEntry::loadImage() {
-	tstring_type tstrImageDirPath;
-	tstring_type tstrImageFilePath;
-
-	if (!NFDWApp::getInstance()->getImageFileDir(tstrImageDirPath))
+void Dlg4NDMainEntry::_drawPage( HDC hDC, const RECT& rcClient ) {
+	if( hDC == NULL )
 		return;
-	// 
-	tstrImageFilePath = tstrImageDirPath + _T("main_bk.jpg");
-	if( !YBImageLoader::getInstance()->loadImage( tstrImageFilePath, m_uImageIdBK ) )
-		return;
-	
+	for( NDPageBase* page : m_containerPages ) {
+		if( page != NULL && page->isVisible() ) {
+			page->onDrawPage( hDC, rcClient );
+		}
+	}
 }
 
-void Dlg4NDMainEntry::loadFont() {
+void Dlg4NDMainEntry::_loadImage() {
+	LOADIMAGE_BEGIN();
+	LOADIMAGE_ENTRY( m_uImageIdBK, _T("main_bk.jpg") )
+	LOADIMAGE_END();
+}
+
+void Dlg4NDMainEntry::_loadFont() {
 
 }
+
+void Dlg4NDMainEntry::_initPages( HINSTANCE hInst ) {
+	if( m_hWnd == NULL )
+		return;
+	for( NDPageBase* page : m_containerPages ) {
+		if( page != NULL ) {
+			page->init( m_hWnd, hInst );
+		}
+	}
+}
+
+void Dlg4NDMainEntry::switchPage( unsigned int uPageId ) {
+    // hide all
+	for( NDPageBase* page : m_containerPages ) {
+		if( page != NULL ) {
+			page->setVisible( false );
+		}
+	}
+
+	// switch to page which uPageId specify to.
+	for( NDPageBase* page : m_containerPages ) {
+		if( page != NULL && page->getPageId() == uPageId ) {
+			page->setVisible( true );
+			break;
+		}
+	}
+}
+
+
+

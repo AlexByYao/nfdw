@@ -23,6 +23,11 @@
 #include <atlstr.h>
 
 // TODO:  在此处引用程序需要的其他头文件
+#include <string>
+#include "tchar.h"
+
+typedef std::basic_string< TCHAR > tstring_type;
+
 #include "comdef.h"
 #pragma comment( lib, "gdiplus.lib" )
 #include "gdiplus.h"
